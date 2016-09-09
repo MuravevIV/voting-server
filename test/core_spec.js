@@ -1,13 +1,13 @@
 import {List, Map} from "immutable";
 import {expect} from "chai";
-import {setEntries, next, vote} from "../src/core";
+import {INITIAL_STATE, setEntries, next, vote} from "../src/core";
 
 describe('application logic', () => {
 
     describe('setEntries', () => {
 
         it('adds entries to the state', () => {
-            const $$state = Map();
+            const $$state = INITIAL_STATE;
             const entries = ['Trainspotting', '28 Days Later'];
             const $$nextState = setEntries($$state, entries);
 
