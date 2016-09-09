@@ -1,13 +1,13 @@
 import {Map, fromJS} from "immutable";
 import {expect} from "chai";
+import {INITIAL_STATE} from '../src/core';
 import reducer from "../src/reducer";
 
 describe('reducer', () => {
 
     it('handles SET_ENTRIES', () => {
-        const $$initialState = Map();
         const action = {type: 'SET_ENTRIES', entries: ['Trainspotting']};
-        const $$nextState = reducer($$initialState, action);
+        const $$nextState = reducer(INITIAL_STATE, action);
 
         expect($$nextState).to.be.equal(fromJS({
             $$entries: ['Trainspotting']
@@ -53,6 +53,22 @@ describe('reducer', () => {
         const $$nextState = reducer(undefined, action);
         expect($$nextState).to.be.equal(fromJS({
             $$entries: ['Trainspotting']
+        }));
+    });
+
+    it('can be used with reduce', () => {
+        const actions = [
+            {type: 'SET_ENTRIES', entries: ['Trainspotting', '28 Days Later']},
+            {type: 'NEXT'},
+            {type: 'VOTE', entry: 'Trainspotting'},
+            {type: 'VOTE', entry: '28 Days Later'},
+            {type: 'VOTE', entry: 'Trainspotting'},
+            {type: 'NEXT'}
+        ];
+        const $$finalState = actions.reduce(reducer, INITIAL_STATE);
+
+        expect($$finalState).to.be.equal(fromJS({
+            $$winner: 'Trainspotting'
         }));
     });
 });
