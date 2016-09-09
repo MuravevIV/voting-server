@@ -25,12 +25,18 @@ export function next($$state) {
         .get('$$entries')
         .concat(getWinners($$state.get('$$vote')));
 
-    return $$state.merge({
-        $$vote: Map({
-            $$pair: $$entries.take(2)
-        }),
-        $$entries: $$entries.skip(2)
-    });
+    if ($$entries.size === 1) {
+        return $$state.remove('$$vote')
+            .remove('$$entries')
+            .set('$$winner', $$entries.first());
+    } else {
+        return $$state.merge({
+            $$vote: Map({
+                $$pair: $$entries.take(2)
+            }),
+            $$entries: $$entries.skip(2)
+        });
+    }
 }
 
 export function vote($$state, entry) {
